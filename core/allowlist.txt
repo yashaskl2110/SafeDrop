@@ -1,0 +1,4 @@
+admin@example.com
+testapikey123456
+harmless_url.com
+safe_value_from_file

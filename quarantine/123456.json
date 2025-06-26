@@ -1,0 +1,11 @@
+{
+  "auth": {
+    "username": "admin@example.com",
+    "password": "SuperSecret123"
+  },
+  "keys": {
+    "api": "abc123def456secret789ghi",
+    "google": "AIzaSyA-abcdefghijklmNOPQRSTUVWX123456",
+    "aws": "AKIAIOSFODNN7EXAMPLE"
+  }
+}
