@@ -1,77 +1,86 @@
-🔐 SafeDrop: Sensitive Data Leak Detection Tool
-SafeDrop is a powerful and extensible desktop-based security utility that automatically scans files for sensitive information leaks using custom regex-based patterns, real-time file monitoring, encryption, and a clean, user-friendly GUI.
+# SafeDrop 🔐  
+**Sensitive Data Leak Detector with Multi-File Support and GUI**  
 
-🚀 Overview
-SafeDrop is designed to monitor folders in real-time and detect potential leaks of confidential data, such as:
+SafeDrop is a lightweight desktop tool designed to detect sensitive information leaks (API keys, passwords, emails, webhooks, etc.) across various file formats. It supports automated folder monitoring, leak detection, alert popups, quarantining suspicious files, encrypted logging, and a powerful GUI for visualization and interaction.
 
-API keys
+---
 
-AWS credentials
+## 🧩 Features  
+- ✅ **Multi-format support**: `.txt`, `.pdf`, `.docx`, `.json`, `.env`, `.log`, `.csv`, `.zip`  
+- 🔍 **Regex-based leak detection** using highly customizable and robust patterns  
+- 📁 **Folder Monitoring**: Real-time scan of folders and subfolders  
+- 💥 **Leak Alerts**: Popup warning + quarantine of suspicious files  
+- 🧼 **Sanitized Output**: Masked display of detected values  
+- 🔐 **AES-256 Encryption**: Encrypted leak logs  
+- 📊 **Detailed GUI Dashboard**:  
+  - File path, timestamp, leak type, and masked value  
+  - Analysis report grouped by leak type  
+  - Pagination and collapsible reports  
+- 🎨 **Dark/Light Toggle Theme**  
+- 📦 **Quarantine Folder Access**  
+- ✅ **Unit-tested handler modules**  
 
-Google API keys
+---
 
-Email:Password combos
+## 🖥️ Screenshots  
 
-Webhooks
+| GUI Dashboard | Folder Picker |
+|---------------|----------------|
+| ![1](./screenshots/1.png) | ![2](./screenshots/2.png) |
 
-Environment secrets
+| Leak Detection Popup | Detection Summary |
+|----------------------|-------------------|
+| ![3](./screenshots/3.png) | ![4](./screenshots/4.png) |
 
-Hardcoded credentials (username/password)
+| Quarantined File | Encrypted Logs | CSV Log |
+|------------------|----------------|---------|
+| ![5](./screenshots/5.png) | ![6](./screenshots/6.png) | ![7](./screenshots/7.png) |
 
-Slack tokens and URLs
+| Terminal Output |
+|-----------------|
+| ![8](./screenshots/8.png) |
 
-Secrets in URLs
+---
 
-It supports automatic quarantine, sanitized UI display, AES encryption for secure logging, and includes full unit testing coverage.
+## ⚙️ Setup & Installation  
 
-🧱 Key Features
-Feature	Description
-🔍 Regex-based Detection	Detects sensitive patterns across various formats using carefully tuned regex patterns with named groups.
-📁 Multi-file Support	Handles .txt, .pdf, .docx, .json, .csv, .log, .env, .zip.
-🖥️ GUI (Tkinter + CustomTkinter)	Includes folder selection, live status, alert popups, theme toggle, navigation, and scrollable tables.
-📊 Analysis Summary Panel	Collapsible panel summarizing leak types and counts.
-🧼 Sanitized Logging & Display	All leaks shown in GUI and CSV logs are masked (e.g., ****ssword) to avoid accidental exposure.
-🔐 Encrypted Raw Log (AES-256)	Full leak values are stored securely in logs/encrypted_leaks.log using cryptography.Fernet.
-📦 Quarantine System	Automatically moves flagged files to a quarantine/ folder and provides a button to open it.
-✅ Allowlist Support	Ignore known safe strings or values (e.g., placeholder API keys) by listing them in core/allowlist.txt.
-🧪 Unit Tests	Tests written using pytest for all handlers and utility modules with mocking and temp files.
-🧱 Modular Codebase	Separated into core/, handlers/, tests/, and GUI for readability and easy maintenance.
-🌙 Dark Mode Support	GUI includes light/dark mode toggle.
-⏭ Pagination in GUI	Leak logs are paginated with navigation to improve GUI performance and clarity.
-🔁 Zip File Support	Automatically extracts and scans supported files inside .zip archives.
-🎯 Lightweight Dependencies	Does not require any external database or cloud integration — fully local and offline-capable.
+### 📦 Clone the Repo  
+```bash
+git clone https://github.com/yashaskl2110/SafeDrop.git
+cd SafeDrop
 
-🧠 Technologies Used
-Python 3.x
+Create a Virtual Environment (Recommended)
+python -m venv venv
+# Activate (Windows)
+venv\Scripts\activate
 
-CustomTkinter / tkinter – GUI
+Install Dependencies
+pip install -r requirements.txt
+If requirements.txt is missing, install manually:
+pip install customtkinter pycryptodome python-docx PyPDF2 watchdog
 
-cryptography – AES-256 encryption (Fernet)
+🔐 Encryption Setup
+AES encryption is used for log safety.
+Key is auto-generated in key.key
+Encrypted logs stored in logs/encrypted_leaks.log
+Sanitized CSV logs stored in logs/detection_logs.csv
 
-PyPDF2 / pdfplumber – PDF text extraction
+🚀 Running the App
+🖱️ GUI Mode
+bash
+python gui/gui.py
+🧪 Run Unit Tests
+bash
+pytest tests/
 
-python-docx – .docx file parsing
-
-watchdog – Real-time folder monitoring
-
-pytest – Testing framework
-
-os, shutil, zipfile, tempfile, json, csv – File system and data handling
-
-📁 Project Structure
-graphql
-Copy
-Edit
+🗂️ Project Structure
 SafeDrop/
 │
 ├── core/
-│   ├── detectors.py            # Regex pattern matching + allowlist
-│   ├── utils.py                # Sanitization, logging, encryption helpers
-│   ├── watcher.py              # Real-time file monitoring via watchdog
-│   ├── decrypt_logs.py         # CLI tool to decrypt AES logs
-│   ├── secret.key              # Auto-generated AES key (never shared)
+│   ├── detectors.py           # Regex match logic
+│   ├── utils.py               # Encryption, logging, helpers
 │
-├── handlers/                   # Modular file-specific logic
+├── handlers/                 # File-specific detection handlers
 │   ├── txt_handler.py
 │   ├── pdf_handler.py
 │   ├── docx_handler.py
@@ -80,109 +89,45 @@ SafeDrop/
 │   ├── env_handler.py
 │   ├── log_handler.py
 │   ├── zip_handler.py
-│   └── __init__.py
 │
-├── gui.py                      # Tkinter-based user interface
-├── logs/
-│   ├── detections_log.csv      # UI + CSV sanitized log
-│   ├── encrypted_leaks.log     # AES-256 encrypted log of full leaks
+├── gui/
+│   └── gui.py                 # CustomTkinter GUI interface
 │
-├── quarantine/                 # Folder for quarantined files
-├── requirements.txt
 ├── tests/
-│   ├── test_utils.py           # Tests for sanitization, logging, encryption
-│   ├── test_txt_handler.py     # All file handler tests (mocked)
-│   └── ...                     # Additional tests (json, env, zip, etc.)
+│   ├── test_csv_handler.py    # Sample unit tests
+│   ├── ...
+│
+├── logs/
+│   ├── detection_logs.csv     # Sanitized leak logs
+│   ├── encrypted_leaks.log    # Encrypted logs (AES)
+│
+├── quarantine/               # Quarantined suspicious files
+│
+├── requirements.txt
+├── key.key                   # AES key file
 └── README.md
-⚙️ Setup & Installation
-Clone the Repository
 
-bash
-Copy
-Edit
-git clone https://github.com/yashaskl2110/SafeDrop.git
-cd SafeDrop
-Create Virtual Environment (Optional but Recommended)
+🧠 How It Works
+User selects a folder to monitor
+Every file (including inside ZIPs) is scanned using format-specific handlers
+If sensitive content is found:
+GUI displays timestamped result
+Masked value shown in table
+Logs are saved (sanitized & encrypted)
+File is moved to quarantine/
+Alert popup is triggered
 
-bash
-Copy
-Edit
-python -m venv venv
-venv\Scripts\activate  # On Windows
-source venv/bin/activate  # On Linux/Mac
-Install Requirements
+🔒 Leak Types Detected
+email_pass: Email:Password combo
+aws_key: AWS Access Key
+google_key: Google API Key
+slack_hook: Slack Webhook
+api_key: Generic API Key or Token
+url_pass: URLs with embedded passwords
+.env variables: SECRET_KEY, DB_PASS, etc.
 
-bash
-Copy
-Edit
-pip install -r requirements.txt
-If you don’t have requirements.txt, install manually:
+👨‍💻 Author
+Built with ❤️ by Yashas Kumara Lakawath
 
-bash
-Copy
-Edit
-pip install customtkinter watchdog cryptography pdfplumber python-docx PyPDF2
-Run the App
-
-bash
-Copy
-Edit
-python gui.py
-🔐 Encryption & Decryption
-A secret AES key is auto-generated (core/secret.key) on first run.
-
-Encrypted logs are written to logs/encrypted_leaks.log.
-
-To decrypt:
-
-bash
-Copy
-Edit
-python core/decrypt_logs.py
-✅ Unit Testing
-To run all tests:
-
-bash
-Copy
-Edit
-pytest tests/
-Includes:
-
-Sanitization & Encryption tests
-
-Handler tests (txt, pdf, json, env, csv, log, zip)
-
-Allowlist testing
-
-📝 How Quarantine Works
-When a file contains a leak, it’s automatically moved to quarantine/ folder.
-
-Users are notified via popup.
-
-GUI includes a button to open the quarantine folder in the system file explorer.
-
-🧾 Logging Behavior
-Type	File	Contents
-Sanitized Log	logs/detections_log.csv	Timestamp, file path, label, masked value
-Encrypted Log	logs/encrypted_leaks.log	AES-encrypted full raw value
-Allowlist	core/allowlist.txt	Skips matching strings from being flagged
-
-✨ Demo Scenarios
-Add a .env file with DB_PASS=123456
-
-Place a .pdf file containing user@example.com:supersecret
-
-Drop a .zip archive with mixed file types
-
-🟢 SafeDrop will:
-
-Detect and mask the values
-
-Show sanitized entries in GUI
-
-Quarantine the files
-
-Save encrypted logs securely
-
-🙋‍♂️ Author
-Made with 💻 by Yashas Kumara Lakawath
+📄 License
+This project is licensed under the MIT License. See LICENSE for details.
