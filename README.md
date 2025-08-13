@@ -1,139 +1,87 @@
-CloudSentinel ☁️🔍
+# SafeDrop 🔐 **Sensitive Data Leak Detector with Multi-File Support and GUI** SafeDrop is a lightweight desktop tool designed to detect sensitive information leaks (API keys, passwords, emails, webhooks, etc.) across various file formats. It supports automated folder monitoring, leak detection, alert popups, quarantining suspicious files, encrypted logging, and a powerful GUI for visualization and interaction. --- ## 🧩 Features - ✅ **Multi-format support**: .txt, .pdf, .docx, .json, .env, .log, .csv, .zip - 🔍 **Regex-based leak detection** using highly customizable and robust patterns - 📁 **Folder Monitoring**: Real-time scan of folders and subfolders - 💥 **Leak Alerts**: Popup warning + quarantine of suspicious files - 🧼 **Sanitized Output**: Masked display of detected values - 🔐 **AES-256 Encryption**: Encrypted leak logs - 📊 **Detailed GUI Dashboard**: - File path, timestamp, leak type, and masked value - Analysis report grouped by leak type - Pagination and collapsible reports - 🎨 **Dark/Light Toggle Theme** - 📦 **Quarantine Folder Access** - ✅ **Unit-tested handler modules** --- ## 🖥️ Screenshots | GUI Dashboard | Folder Picker | |---------------|----------------| | ![1](./screenshots/1.png) | ![2](./screenshots/2.png) | | Leak Detection Popup | Detection Summary | |----------------------|-------------------| | ![3](./screenshots/3.png) | ![4](./screenshots/4.png) | | Quarantined File | Encrypted Logs | CSV Log | |------------------|----------------|---------| | ![5](./screenshots/5.png) | ![6](./screenshots/6.png) | ![7](./screenshots/7.png) | | Terminal Output | |-----------------| | ![8](./screenshots/8.png) | --- ## ⚙️ Setup & Installation ### 📦 Clone the Repo
+bash
+git clone https://github.com/yashaskl2110/SafeDrop.git
+cd SafeDrop
 
-Multi-Cloud Sensitive Data Leak Detection with GUI Dashboard
-
-CloudSentinel is a desktop security tool for scanning AWS S3 buckets and Azure Blob containers for sensitive data leaks (API keys, passwords, tokens, secrets, etc.). It features encrypted logging, developer attribution, file decay tracking, leak fingerprinting, and a cross-cloud GUI for interactive analysis.
-
-🧩 Features
-
-✅ Multi-Cloud Support: AWS S3 + Azure Blob Storage scanning
-
-🔍 Regex-based leak detection across .env, .txt, .json, .log, .csv and more
-
-📊 GUI Dashboard:
-
-Leak file, leak type, masked value
-
-Click any row for detailed analysis (developer info, file age, timestamps, encrypted value)
-
-🔐 AES-256 Encrypted Logs: Leak data securely stored in encrypted_logs.csv
-
-🧑‍💻 Developer Fingerprinting: Identify which developer introduced the leak
-
-⏳ File Decay Tracking: First seen, last modified, age in days
-
-🆔 Leak Fingerprinting: Unique IDs for leak entries to avoid duplicates
-
-🔄 Cross-Cloud View: Analyze AWS and Azure leaks in one interface
-
-🖥 Offline Log Review: View encrypted logs without running scans
-
-🖥️ Screenshots
-Azure Leak Scan	Decrypt All Logs
-
-	
-AWS Leak Scan	Empty Dashboard
-
-	
-Azure Blob Container	AWS S3 Bucket
-
-	
-⚙️ Setup & Installation
-📦 Clone the Repo
-git clone https://github.com/YOUR_USERNAME/CloudSentinel.git
-cd CloudSentinel
-
-🛠 Create a Virtual Environment (Recommended)
+Create a Virtual Environment (Recommended)
 python -m venv venv
 # Activate (Windows)
 venv\Scripts\activate
-# Activate (Linux/Mac)
-source venv/bin/activate
 
-📥 Install Dependencies
+Install Dependencies
 pip install -r requirements.txt
+If requirements.txt is missing, install manually:
+pip install customtkinter pycryptodome python-docx PyPDF2 watchdog
 
-🔑 Configuration
-
-Create a .env file in the root folder:
-
-# AWS credentials
-AWS_ACCESS_KEY_ID=your_aws_access_key
-AWS_SECRET_ACCESS_KEY=your_aws_secret_key
-AWS_REGION=your_region
-
-# Azure credentials
-AZURE_STORAGE_ACCOUNT_NAME=your_storage_account
-AZURE_STORAGE_ACCOUNT_KEY=your_account_key
+🔐 Encryption Setup
+AES encryption is used for log safety.
+Key is auto-generated in key.key
+Encrypted logs stored in logs/encrypted_leaks.log
+Sanitized CSV logs stored in logs/detection_logs.csv
 
 🚀 Running the App
-🖱 GUI Mode
-python gui/main_gui.py
+🖱️ GUI Mode
+bash
+python gui/gui.py
+🧪 Run Unit Tests
+bash
+pytest tests/
 
 🗂️ Project Structure
-CloudSentinel/
+SafeDrop/
+│
+├── core/
+│   ├── detectors.py           # Regex match logic
+│   ├── utils.py               # Encryption, logging, helpers
+│
+├── handlers/                 # File-specific detection handlers
+│   ├── txt_handler.py
+│   ├── pdf_handler.py
+│   ├── docx_handler.py
+│   ├── json_handler.py
+│   ├── csv_handler.py
+│   ├── env_handler.py
+│   ├── log_handler.py
+│   ├── zip_handler.py
 │
 ├── gui/
-│   ├── main_gui.py           # Main GUI entry point
-│   ├── decrypt_popup.py      # Decrypt all logs popup
+│   └── gui.py                 # CustomTkinter GUI interface
 │
-├── scanners/
-│   ├── aws_scanner.py        # AWS S3 scanning logic
-│   ├── azure_scanner.py      # Azure Blob scanning logic
+├── tests/
+│   ├── test_csv_handler.py    # Sample unit tests
+│   ├── ...
 │
-├── utils/
-│   ├── dev_fingerprint.py    # Developer identity tracking
-│   ├── decay_log.py          # File decay tracking
+├── logs/
+│   ├── detection_logs.csv     # Sanitized leak logs
+│   ├── encrypted_leaks.log    # Encrypted logs (AES)
 │
-├── reports/
-│   ├── formatter.py          # Logging & encryption
+├── quarantine/               # Quarantined suspicious files
 │
 ├── requirements.txt
-├── .env
+├── key.key                   # AES key file
 └── README.md
 
 🧠 How It Works
-
-Select a cloud provider (AWS or Azure) in the GUI.
-
-Enter the bucket or container name.
-
-Click Start Scan → leaks appear in the dashboard in real-time.
-
-Click a leak entry → view details in the Analysis Panel:
-
-Leak type
-
-Developer fingerprint
-
-First seen / last modified / file age
-
-Encrypted value
-
-Optionally click Decrypt All Logs → enter your key to see full values.
+User selects a folder to monitor
+Every file (including inside ZIPs) is scanned using format-specific handlers
+If sensitive content is found:
+GUI displays timestamped result
+Masked value shown in table
+Logs are saved (sanitized & encrypted)
+File is moved to quarantine/
+Alert popup is triggered
 
 🔒 Leak Types Detected
-
+email_pass: Email:Password combo
 aws_key: AWS Access Key
-
-secret_key: Secrets in .env
-
-db_pass: Database password
-
-password: Generic password
-
-api_key: Generic API Key / Token
-
 google_key: Google API Key
-
-slack_hook: Slack Webhook URL
-
-url_pass: URLs containing passwords
+slack_hook: Slack Webhook
+api_key: Generic API Key or Token
+url_pass: URLs with embedded passwords
+.env variables: SECRET_KEY, DB_PASS, etc.
 
 👨‍💻 Author
-
-Built with ☁️❤️ by Yashas Kumara Lakawath
+Built with ❤️ by Yashas Kumara Lakawath
 
 📄 License
-
-This project is licensed under the MIT License. See LICENSE for details.
+This project is licensed under the MIT License.
