@@ -1,5 +1,4 @@
- | ![1](./screenshots/1.png) | ![2](./screenshots/2.png) | | Leak Detection Popup | Detection Summary | |----------------------|-------------------| | ![3](./screenshots/3.png) | ![4](./screenshots/4.png) | | Quarantined File | Encrypted Logs | CSV Log | |------------------|----------------|---------| | ![5](./screenshots/5.png) | ![6](./screenshots/6.png) | ![7](./screenshots/7.png) | | Terminal Output | |-----------------| | ![8](./screenshots/8.png) | -- 
- # SafeDrop 🔐
+# SafeDrop 🔐
 
 **Sensitive Data Leak Detector with Multi‑File Support & Desktop GUI**
 Detect API keys, passwords, emails, webhooks and more across folders in real time. SafeDrop monitors files, quarantines suspicious items, and keeps **sanitized CSV logs** plus **AES‑encrypted logs** for secure auditing.
@@ -10,11 +9,8 @@ Detect API keys, passwords, emails, webhooks and more across folders in real tim
   <a href="#usage">Usage</a> •
   <a href="#logs--reports">Logs & Reports</a> •
   <a href="#quarantine">Quarantine</a> •
+  <a href="#screenshots">Screenshots</a> •
   <a href="#troubleshooting">Troubleshooting</a>
-</p>
-
-<p align="center">
-  <img alt="SafeDrop GUI" src="assets/screenshots/gui_dashboard.png" width="780"/>
 </p>
 
 ---
@@ -111,10 +107,6 @@ python run_safedrop.py
 4. Results appear in the top table (masked values). Click a row to open the **Analysis Panel** for details.
 5. Use **Open Quarantine Folder** to inspect isolated files.
 
-<p align="center">
-  <img alt="Leak popup" src="assets/screenshots/leak_popup.png" width="520"/>
-</p>
-
 ### CLI (optional)
 
 ```bash
@@ -152,9 +144,25 @@ python main.py --provider azure --container your-container-name
 * The GUI provides a one‑click shortcut: **Open Quarantine Folder**.
 * Restoring files is manual—inspect first, then move them out if they’re truly safe.
 
-<p align="center">
-  <img alt="Quarantine folder" src="assets/screenshots/quarantine_folder.png" width="720"/>
-</p>
+---
+
+## Screenshots
+
+| ![1](./screenshots/1.png)                                                                  | ![2](./screenshots/2.png)                                            |
+| ------------------------------------------------------------------------------------------ | -------------------------------------------------------------------- |
+| **Dashboard:** GUI running with folder selection, theme toggle, and active leak scan view. | **Leak Summary Panel:** Shows grouped summary of all detected leaks. |
+
+| ![3](./screenshots/3.png)                                                  | ![4](./screenshots/4.png)                                                     |
+| -------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| **Leak Alert Popup:** Triggered when sensitive content is found in a file. | **Quarantine Confirmation:** File has been quarantined to protect the system. |
+
+| ![5](./screenshots/5.png)                                      | ![6](./screenshots/6.png)                                       | ![7](./screenshots/7.png)                                     |
+| -------------------------------------------------------------- | --------------------------------------------------------------- | ------------------------------------------------------------- |
+| **Quarantine Folder View:** Shows the isolated sensitive file. | **Encrypted Log File:** AES‑256 encrypted log of leak metadata. | **Sanitized CSV Log:** Human-readable log with masked values. |
+
+| ![8](./screenshots/8.png)                                                                    |
+| -------------------------------------------------------------------------------------------- |
+| **Terminal Output (CLI mode):** Shows active scanning and encryption process in CLI if used. |
 
 ---
 
