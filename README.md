@@ -1,87 +1,206 @@
-# SafeDrop 🔐 **Sensitive Data Leak Detector with Multi-File Support and GUI** SafeDrop is a lightweight desktop tool designed to detect sensitive information leaks (API keys, passwords, emails, webhooks, etc.) across various file formats. It supports automated folder monitoring, leak detection, alert popups, quarantining suspicious files, encrypted logging, and a powerful GUI for visualization and interaction. --- ## 🧩 Features - ✅ **Multi-format support**: .txt, .pdf, .docx, .json, .env, .log, .csv, .zip - 🔍 **Regex-based leak detection** using highly customizable and robust patterns - 📁 **Folder Monitoring**: Real-time scan of folders and subfolders - 💥 **Leak Alerts**: Popup warning + quarantine of suspicious files - 🧼 **Sanitized Output**: Masked display of detected values - 🔐 **AES-256 Encryption**: Encrypted leak logs - 📊 **Detailed GUI Dashboard**: - File path, timestamp, leak type, and masked value - Analysis report grouped by leak type - Pagination and collapsible reports - 🎨 **Dark/Light Toggle Theme** - 📦 **Quarantine Folder Access** - ✅ **Unit-tested handler modules** --- ## 🖥️ Screenshots | GUI Dashboard | Folder Picker | |---------------|----------------| | ![1](./screenshots/1.png) | ![2](./screenshots/2.png) | | Leak Detection Popup | Detection Summary | |----------------------|-------------------| | ![3](./screenshots/3.png) | ![4](./screenshots/4.png) | | Quarantined File | Encrypted Logs | CSV Log | |------------------|----------------|---------| | ![5](./screenshots/5.png) | ![6](./screenshots/6.png) | ![7](./screenshots/7.png) | | Terminal Output | |-----------------| | ![8](./screenshots/8.png) | --- ## ⚙️ Setup & Installation ### 📦 Clone the Repo
-bash
-git clone https://github.com/yashaskl2110/SafeDrop.git
-cd SafeDrop
+ | ![1](./screenshots/1.png) | ![2](./screenshots/2.png) | | Leak Detection Popup | Detection Summary | |----------------------|-------------------| | ![3](./screenshots/3.png) | ![4](./screenshots/4.png) | | Quarantined File | Encrypted Logs | CSV Log | |------------------|----------------|---------| | ![5](./screenshots/5.png) | ![6](./screenshots/6.png) | ![7](./screenshots/7.png) | | Terminal Output | |-----------------| | ![8](./screenshots/8.png) | -- 
+ # SafeDrop 🔐
 
-Create a Virtual Environment (Recommended)
-python -m venv venv
-# Activate (Windows)
-venv\Scripts\activate
+**Sensitive Data Leak Detector with Multi‑File Support & Desktop GUI**
+Detect API keys, passwords, emails, webhooks and more across folders in real time. SafeDrop monitors files, quarantines suspicious items, and keeps **sanitized CSV logs** plus **AES‑encrypted logs** for secure auditing.
 
-Install Dependencies
-pip install -r requirements.txt
-If requirements.txt is missing, install manually:
-pip install customtkinter pycryptodome python-docx PyPDF2 watchdog
+<p align="center">
+  <a href="#features">Features</a> •
+  <a href="#quick-start">Quick Start</a> •
+  <a href="#usage">Usage</a> •
+  <a href="#logs--reports">Logs & Reports</a> •
+  <a href="#quarantine">Quarantine</a> •
+  <a href="#troubleshooting">Troubleshooting</a>
+</p>
 
-🔐 Encryption Setup
-AES encryption is used for log safety.
-Key is auto-generated in key.key
-Encrypted logs stored in logs/encrypted_leaks.log
-Sanitized CSV logs stored in logs/detection_logs.csv
+<p align="center">
+  <img alt="SafeDrop GUI" src="assets/screenshots/gui_dashboard.png" width="780"/>
+</p>
 
-🚀 Running the App
-🖱️ GUI Mode
-bash
-python gui/gui.py
-🧪 Run Unit Tests
-bash
-pytest tests/
+---
 
-🗂️ Project Structure
+## Highlights
+
+* ✅ **Multi‑format scanning**: `.txt`, `.pdf`, `.docx`, `.json`, `.env`, `.log`, `.csv`, `.zip`
+* 🔍 **Robust regex detection** for API keys (AWS/Google/etc.), emails, passwords, URLs with creds, Slack webhooks, and common `.env` secrets
+* 🖥️ **Desktop GUI** (CustomTkinter) with real‑time results
+* 🧼 **Sanitized display** (masked values) to avoid leaking more data in the UI
+* 🔐 **AES‑256 encrypted logs** for secure, later decryption
+* 🧰 **Quarantine mode**: suspicious files moved to a safe folder
+* 📊 **Analysis panel**: per‑file details, developer/fingerprint info\* and decay tracking\*
+* 🌗 **Dark/Light theme** toggle
+* 🧪 **Unit‑tested handlers** and modular scanners (extensible)
+
+> \*Optional/advanced depending on your current branch.
+
+---
+
+## Folder Structure (typical)
+
+```
 SafeDrop/
-│
-├── core/
-│   ├── detectors.py           # Regex match logic
-│   ├── utils.py               # Encryption, logging, helpers
-│
-├── handlers/                 # File-specific detection handlers
-│   ├── txt_handler.py
-│   ├── pdf_handler.py
-│   ├── docx_handler.py
-│   ├── json_handler.py
-│   ├── csv_handler.py
-│   ├── env_handler.py
-│   ├── log_handler.py
-│   ├── zip_handler.py
-│
-├── gui/
-│   └── gui.py                 # CustomTkinter GUI interface
-│
-├── tests/
-│   ├── test_csv_handler.py    # Sample unit tests
-│   ├── ...
-│
-├── logs/
-│   ├── detection_logs.csv     # Sanitized leak logs
-│   ├── encrypted_leaks.log    # Encrypted logs (AES)
-│
-├── quarantine/               # Quarantined suspicious files
-│
-├── requirements.txt
-├── key.key                   # AES key file
-└── README.md
+├─ gui/
+│  └─ main_gui.py                # Desktop app entrypoint
+├─ scanners/
+│  ├─ aws_scanner.py
+│  └─ azure_scanner.py
+├─ reports/
+│  ├─ formatter.py               # Writes plain & encrypted logs
+│  └─ detection_logs.csv         # Sanitized
+├─ utils/                        # helpers, crypto, fingerprints, decay tracking
+├─ quarantine/                   # quarantined files (auto‑created)
+├─ assets/
+│  └─ screenshots/               # images used in README
+├─ run_safedrop.py               # Convenience launcher (GUI)
+├─ main.py                       # CLI runner (optional)
+├─ requirements.txt
+└─ README.md
+```
 
-🧠 How It Works
-User selects a folder to monitor
-Every file (including inside ZIPs) is scanned using format-specific handlers
-If sensitive content is found:
-GUI displays timestamped result
-Masked value shown in table
-Logs are saved (sanitized & encrypted)
-File is moved to quarantine/
-Alert popup is triggered
+---
 
-🔒 Leak Types Detected
-email_pass: Email:Password combo
-aws_key: AWS Access Key
-google_key: Google API Key
-slack_hook: Slack Webhook
-api_key: Generic API Key or Token
-url_pass: URLs with embedded passwords
-.env variables: SECRET_KEY, DB_PASS, etc.
+## Quick Start
 
-👨‍💻 Author
-Built with ❤️ by Yashas Kumara Lakawath
+### 1) Clone
 
-📄 License
-This project is licensed under the MIT License.
+```bash
+# HTTPS
+git clone https://github.com/<you>/SafeDrop.git
+cd SafeDrop
+```
+
+### 2) Create & activate a virtual environment
+
+**Windows**
+
+```bash
+python -m venv .venv
+.venv\Scripts\activate
+```
+
+**macOS / Linux**
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+### 3) Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 4) Launch the GUI
+
+```bash
+python run_safedrop.py
+```
+
+> If your entrypoint differs, start via `python -m gui.main_gui` instead.
+
+---
+
+## Usage
+
+### GUI Workflow
+
+1. Click **Select Folder** and choose the directory to monitor (subfolders included).
+2. Press **Start** to begin scanning in real time.
+3. When a leak is found, you’ll see a **popup alert**; the file can be **quarantined** automatically.
+4. Results appear in the top table (masked values). Click a row to open the **Analysis Panel** for details.
+5. Use **Open Quarantine Folder** to inspect isolated files.
+
+<p align="center">
+  <img alt="Leak popup" src="assets/screenshots/leak_popup.png" width="520"/>
+</p>
+
+### CLI (optional)
+
+```bash
+# Example: scan an AWS bucket or Azure container from the CLI
+python main.py --provider aws --bucket your-bucket-name
+python main.py --provider azure --container your-container-name
+```
+
+> CLI output is written into the same report files as the GUI.
+
+---
+
+## Logs & Reports
+
+* **Sanitized CSV**: `reports/detection_logs.csv`
+  Masked values (e.g. `********xyz`) for safe sharing.
+
+* **Encrypted CSV**: `reports/encrypted_logs.csv`
+  AES‑256 encrypted entries. A key file (e.g. `.encryption.key`) is used to encrypt/decrypt.
+
+* **Decrypting**
+  Use the **Decrypt Logs** button in the GUI, or run your decrypt helper:
+
+  ```bash
+  python decrypt_logs.py --key .encryption.key --in reports/encrypted_logs.csv --out reports/decrypted_logs.csv
+  ```
+
+> Keep the key file safe and **out of version control**. Add it to `.gitignore`.
+
+---
+
+## Quarantine
+
+* Quarantined files are moved to the `quarantine/` folder.
+* The GUI provides a one‑click shortcut: **Open Quarantine Folder**.
+* Restoring files is manual—inspect first, then move them out if they’re truly safe.
+
+<p align="center">
+  <img alt="Quarantine folder" src="assets/screenshots/quarantine_folder.png" width="720"/>
+</p>
+
+---
+
+## Configuration Tips
+
+* **Add screenshots** to `assets/screenshots/` and update paths in this README.
+* **Ignore generated files** by adding the following to `.gitignore`:
+
+  ```
+  .venv/
+  __pycache__/
+  *.pyc
+  quarantine/
+  reports/*.csv
+  .encryption.key
+  .env
+  ```
+* **Environment variables** (if used) go in `.env` (not committed).
+
+---
+
+## Troubleshooting
+
+* **Pip errors / missing wheels** → Upgrade pip: `python -m pip install --upgrade pip`
+* **tkinter not found (Linux)** → Install Tk libs: `sudo apt-get install python3-tk`
+* **PDF/DOCX reading fails** → Ensure `PyPDF2` and `python-docx` are installed.
+* **Nothing detected** → Test with seeded samples (fake keys) and confirm the folder is correct.
+* **Azure/AWS logs missing** → Verify the corresponding scanner returns results and `reports/formatter.py` is called for **both** providers.
+
+---
+
+## Roadmap
+
+* [ ] Pluggable detection rules by file type
+* [ ] Batch decrypt inside GUI
+* [ ] Export filtered views (by provider/file/leak type)
+* [ ] Rule tuner with test corpus
+
+---
+
+## Contributing
+
+PRs are welcome! Please open an issue first to discuss major changes. Keep the GUI responsive and avoid leaking raw secrets in plaintext.
+
+---
+
+## License
+
+This project is licensed under the **MIT License**.
