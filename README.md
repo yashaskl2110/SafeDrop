@@ -150,11 +150,11 @@ python main.py --provider azure --container your-container-name
 
 | ![1](./screenshots/1.png)                                                                  | ![2](./screenshots/2.png)                                            |
 | ------------------------------------------------------------------------------------------ | -------------------------------------------------------------------- |
-| **Dashboard:** GUI running with folder selection, theme toggle, and active leak scan view. | **Leak Summary Panel:** Shows grouped summary of all detected leaks. |
+| **Dashboard:** GUI running with folder selection, theme toggle, and active leak scan view. | **Folder Selection to Monitor:** Selection of the folder that needs to be monitored. |
 
 | ![3](./screenshots/3.png)                                                  | ![4](./screenshots/4.png)                                                     |
 | -------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
-| **Leak Alert Popup:** Triggered when sensitive content is found in a file. | **Leak Summary Panel:** Shows grouped summary of all detected leaks.**Quarantine Confirmation:** File has been quarantined to protect the system. |
+| **Leak Alert Popup & Quarantine Confirmation:** Triggered when sensitive content is found in a file. File has been quarantined to protect the system. | **Leak Summary Panel:** Shows grouped summary of all detected leaks. |
 
 | ![5](./screenshots/5.png)                                      | ![6](./screenshots/6.png)                                       | ![7](./screenshots/7.png)                                     |
 | -------------------------------------------------------------- | --------------------------------------------------------------- | ------------------------------------------------------------- |
