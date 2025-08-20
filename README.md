@@ -154,7 +154,7 @@ python main.py --provider azure --container your-container-name
 
 | ![3](./screenshots/3.png)                                                  | ![4](./screenshots/4.png)                                                     |
 | -------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
-| **Leak Alert Popup:** Triggered when sensitive content is found in a file. | **Quarantine Confirmation:** File has been quarantined to protect the system. |
+| **Leak Alert Popup:** Triggered when sensitive content is found in a file. | **Leak Summary Panel:** Shows grouped summary of all detected leaks.**Quarantine Confirmation:** File has been quarantined to protect the system. |
 
 | ![5](./screenshots/5.png)                                      | ![6](./screenshots/6.png)                                       | ![7](./screenshots/7.png)                                     |
 | -------------------------------------------------------------- | --------------------------------------------------------------- | ------------------------------------------------------------- |
